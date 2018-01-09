@@ -46,19 +46,26 @@ CDN으로 직접 참조도 할 수 있다. 특히 Vue-CLI에서 simple 프로젝
 <pre><code> <script src="https://unpkg.com/axios/dist/axios.min.js"></script> </code></pre>
 
 ##### axios를 이용하는 방법
-__저수준 API__
-> axios(config)
-> axios(url, config)
+* 저수준 API
+** axios(config)
+** axios(url, config)
+
+* 각 메소드별 별칭
+** axios.get(url[, config])
+** axios.delete(url[, config])
+** axios.post(url[, data[, config]])
+** axios.put(url[, data[, config]])
+** axios.head(url[, data])
+** axios.options(url[, data])
 
 
-__각 메소드별 별칭__
-> axios.get(url[, config])
-> axios.delete(url[, config])
-> axios.post(url[, data[, config]])
-> axios.put(url[, data[, config]])
-> axios.head(url[, data])
-> axios.options(url[, data])
+#### axios 요청과 config 옵션
 
+* baseURL : 이 옵션을 이용해 공통적인 URL 앞부분을 미리 등록해두면 요청 시 나머지 부분만 요청 URL로 전달하면 된다.
+가능하다면 axios.defaults.baseURL 값을 미리 바꾸는 것이 좋다.
+* transformRequest : 요청 데이터를 서버로 전송하기 전에 데이터를 변환하기 위한 함수를 등록한다.
+* transformResponse : 응답 데이터를 수신한 직후에 데이터를 변환하기 위한 함수를 등록한다.
+* header : 요청 시에 서버로 전달하고자 하는 HTTP 헤더 정보를 설정한다.
 
 
 
