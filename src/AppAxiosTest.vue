@@ -51,19 +51,61 @@
     },
     methods: {
       fetchContacts: function() {
-
+        // 저수준 API 이용
+        // - 모든 전달값을 config 객체로 전달함
+        axios.get('/api/contacts', {
+          params: {  pageno: 1, pagesize: 5 }
+        }).then((response) => {
+          console.log(response);  // Promise 객체
+          this.result = response.data;
+        }).catch((ex)=> {
+          console.log("ERROR : ", ex);
+        })
       },
       addContact: function() {
-
+        // post 메서드
+        axios.post('api/contacts', {
+          name: this.name,
+          tel: this.tel,
+          address: this.address
+        }).then((response) => {
+          console.log(response);
+          this.result = response.data;
+          this.no = response.data.no;
+        }).catch((ex) => {
+          console.log("ERROR :", ex);
+        })
       },
       fetchContactOne: function() {
-
+        axios.get('/api/contacts/'+this.no)
+          .then((response) => {
+          console.log(response);
+          this.result = response.data;
+        })
       },
       updateContact: function() {
-
+        axios.put('/api/contacts/'+this.no, {
+          name: this.name,
+          tel: this.tel,
+          address: this.address
+        }).then((response) => {
+          console.log(response);
+          this.name = '';
+          this.tel = '';
+          this.address = '';
+          this.result = response.data;
+        })
       },
       deleteContact: function() {
-
+        axios.delete('/api/contacts/'+this.no)
+          .then((response) => {
+          console.log(response);
+          this.no = 0;
+          this.result = response.data;
+        })
+        .catch((ex) => {
+          console.log("ERROR : ", ex);
+        })
       },
       changePhoto: function() {
 
