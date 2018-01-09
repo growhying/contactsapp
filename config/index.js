@@ -10,7 +10,14 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {}
+    proxyTable: {
+      '/api': {
+        target: 'http://localhost:3000',  // api 경로로의 요청을 target으로 전달
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
     },
 
     // Various Dev Server settings
