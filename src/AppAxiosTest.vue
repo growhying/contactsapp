@@ -26,8 +26,12 @@
         <button @click="deleteContact">삭제</button>
       </div>
       <div class="form-group">
-        <input type="text" v-model="no">
-        <input type="file" ref="photofile" name="photo">
+        <form method="post" enctype="multipart/form-data" action="contacts/1491586656774/photo">
+          <!-- axios로 파일 업로드 기능을 구현하기 위해서는 ref 옵션을 사용하여 input[file] 필드를 직접 참조해야 한다 -->
+          <input type="text" v-model="no">
+          <input type="file" ref="photofile" name="photo">
+          <input type="submit">
+        </form>
         <button @click="changePhoto">파일 변경</button>
       </div>
     </div>
@@ -108,7 +112,17 @@
         })
       },
       changePhoto: function() {
+        // 파일 업로드 기능
+        var data = new FormData();
+        var file = this.$refs.photofile.files[0];
+        data.append('photo', file);
 
+        axios.post('/api/contacts/' + this.no + '/photo', data)
+          .then((response) => {
+          this.result = this.data;
+          }).catch((ex) => {
+          console.log("ERROR : ", ex);
+        })
       }
     }
   }
