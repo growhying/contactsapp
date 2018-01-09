@@ -1,6 +1,6 @@
 # axios를 이용한 서버통신
 
-###axios 기능 테스트
+### axios 기능 테스트
 
 npm install 명령어로 webpack 템플릿을 사용하기 위해 필요한 의존성 패키지들을 다운로드한다.
 webpack 템플릿은 vue-router, 린팅, 단위 테스트 등이 내장되어 있다.
@@ -35,6 +35,29 @@ Vue.js webpack 템플릿에서는 컨슈머 서버 프록시 기능을 Webpack �
 생성된 프로젝트 템플릿에서 config 디렉터리의 index.js파일을 열어서 proxiTable 설정을 한다.
 
 
+#### axios 사용
+
+현재 디렉토리에 axios 라이브러리를 다운로드 한다.
+
+<pre><code>npm install --save axios</pre></code>
+
+CDN으로 직접 참조도 할 수 있다. 특히 Vue-CLI에서 simple 프로젝트 템플릿을 이용하는 경우, CDN으로 직접 참조한다.
+
+<pre><code> <script src="https://unpkg.com/axios/dist/axios.min.js"></script> </code></pre>
+
+##### axios를 이용하는 방법
+__저수준 API__
+> axios(config)
+> axios(url, config)
+
+
+__각 메소드별 별칭__
+> axios.get(url[, config])
+> axios.delete(url[, config])
+> axios.post(url[, data[, config]])
+> axios.put(url[, data[, config]])
+> axios.head(url[, data])
+> axios.options(url[, data])
 
 
 
