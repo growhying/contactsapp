@@ -47,22 +47,22 @@ CDN으로 직접 참조도 할 수 있다. 특히 Vue-CLI에서 simple 프로젝
 
 ##### axios를 이용하는 방법
 * 저수준 API
-** axios(config)
-** axios(url, config)
+  - axios(config)
+  - axios(url, config)
 
 * 각 메소드별 별칭
-** axios.get(url[, config])
-** axios.delete(url[, config])
-** axios.post(url[, data[, config]])
-** axios.put(url[, data[, config]])
-** axios.head(url[, data])
-** axios.options(url[, data])
+  * axios.get(url[, config])
+  * axios.delete(url[, config])
+  * axios.post(url[, data[, config]])
+  * axios.put(url[, data[, config]])
+  * axios.head(url[, data])
+  * axios.options(url[, data])
 
 
 #### axios 요청과 config 옵션
 
 * baseURL : 이 옵션을 이용해 공통적인 URL 앞부분을 미리 등록해두면 요청 시 나머지 부분만 요청 URL로 전달하면 된다.
-가능하다면 axios.defaults.baseURL 값을 미리 바꾸는 것이 좋다.
+  가능하다면 axios.defaults.baseURL 값을 미리 바꾸는 것이 좋다.
 * transformRequest : 요청 데이터를 서버로 전송하기 전에 데이터를 변환하기 위한 함수를 등록한다.
 * transformResponse : 응답 데이터를 수신한 직후에 데이터를 변환하기 위한 함수를 등록한다.
 * header : 요청 시에 서버로 전달하고자 하는 HTTP 헤더 정보를 설정한다.
@@ -73,6 +73,75 @@ axios를 사용하며 then()을 처리할 때는 ES6의 화살표 함수를 사�
 데이터를 수신한 후, Vue 인스턴스 내부 데이터를 변경해야 하는 경우가 많은 데,
 데이터 옵션을 액세스하기 위해서는 this 객체가 Vue 인스턴스를 참조해야 한다.
 then() 내부에서 화살표 함수를 사용하지 않으면 this가 Vue 인스턴스를 참조하지 않기 때문이다.
+
+
+
+### 애플리케이션 구조
+
+- 모든 데이터는 App.vue에서 관리
+
+- 데이터를 변경하는 모든 메서드는 App.vue에 배치
+
+- 모든 컴포넌트들의 모든 상태는 App.vue에서 관리한다.
+
+  따라서 하위 컴포넌트에서 실행 시 필요로 하는 데이터는 모두 props를 통해 전달해주어야 한다.
+
+- 데이터를 변경할 수 있는 메서드도 모두 App.vue에 배치할 것이기 때문에 하위 컴포넌트에서의 작업, 액션이 최상위 컴포넌트인 App.vue의 데이터를 변경하기 위해서는 이벤트 버스를 이용해 App.vue에 전달하고 이를 통해 메서드가 호출될 수 있어야 한다.
+
+- 초기화면에는 ContactList.vue 컴포넌트를 통해 연락처 목록을 보여준다.
+
+- AddContact.vue, UpdateContact.vue 컴포넌트는 연락처를 추가하거나 편집할 때만 화면에 나타나도록 한다.
+  동적 컴포넌트를 이용하여 제어한다.
+
+
+
+#### 기초 작업
+
+src/components 디렉터리에 5개의 컴포넌트 파일을 생성한다.
+
+
+
+##### 컴포넌트별 필요 데이터
+
+- App.vue
+  * currentView : 동적 컴포넌트로 보여줄 컴포넌트 지정
+- ContactList.vue
+  * contactlist : 연락처 목록 데이터
+- AddContact.vue
+- UpdateContact.vue
+  * contact : 연락처 한 건 데이터
+- ContactForm.vue
+  - mode : 쓰기/수정 여부
+- UpdatePhoto.vue
+  - contact : 연락처 한 건 데이터
+
+
+
+App.vue는 자식 컴포넌트들이 필요로 하는 데이터를 data 옵션을 이용해 중앙집중화하여 저장, 관리하며 하위 컴포넌트들에게 props를 통해 전달한다.
+
+
+
+컴포넌트를 작성해나가는 방법은 상향식, 하향식으로 나눌 수 있다.
+
+상향식은 하위 컴포넌트를 먼저 작성하고 상위 컴포넌트를 만들어가는 방법이며, 하향식은 그 반대이다.
+
+
+
+페이징 처리를 위해 vuejs-paginate 라이브러리를 다운로드 한다.
+
+```npm install --save vuejs-paginate```
+
+
+
+axios는 Promise 기반이다. IE에서 Promise 객체를 지원하지 않으므로 별도의 polyfill 요소를 다운로드하고 참조한다.
+
+```npm install --save es6-promise```
+
+
+
+npm으로 설치가 완료되면 package.json이 생성된다.
+
+dependencies 필드에 누락된 것이 없는지 확인하자.
 
 
 

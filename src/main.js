@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 //import App from './AppAxiosTest.vue'
 import axios from 'axios';
+// 전역 수준에서 Promise Polyfill 사용
+require('es6-promise').polyfill();
 
 // prototype에 axios를 추가하면 Vue 인스턴스 내부에서 axios를 더 간단하게 사용할 수 있다.
 Vue.prototype.$axios = axios;
