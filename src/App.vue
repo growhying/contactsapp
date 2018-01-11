@@ -51,9 +51,95 @@
 
     },
     computed: {
-
+      // 전체 연락처 건수를 페이지 사이즈로 나누어 계산해야 하므로 계산형 속성이 적합
+      totalpage: function() {
+        return Math.floor((this.contactlist.totalcount - 1) / this.contactlist.pagesize) + 1;
+      }
     },
     methods: {
+      /*
+      * - 필요 인자 : page
+      * - 보여줄 페이지를 변경.
+      * - data 속성의 contactlist 정보 변경 후 fetchContacts 호출
+      * - Paginate에서 이 함수를 바인딩함
+      * */
+      pageChanged : function(page) {
+        this.contactlist.pageno = page;
+        this.fetchContacts();
+      },
+
+      /*
+      * - 필요 인자 : pageno, pagesize
+      * - 전체 연락처 데이터를 페이징하여 조회
+      * - pageno, pagesize는 data 속성의 contactlist 활용
+      * */
+      fetchContacts: function() {
+        this.$axios.get(CONF.FETCH, {
+          params: {
+            pageno: this.contactlist.pageno,
+            pagesize: this.contactlist.pagesize
+          }
+        }).then((response) => {
+          this.contactlist = response.data;
+        }).catch((ex) => {
+          console.log('fetchContacts failed : ', ex);
+          this.contactlist.contacts = [];
+        })
+      },
+
+      addContact: function(contact) {
+        this.$axios.post(CONF.ADD, contact)
+        .then((response) => {
+          this.contactlist.pageno = 1;
+          this.fetchContacts();
+        })
+        .catch((ex) => {
+          console.log('addContact failed : ', ex);
+        })
+      },
+
+      updateContact: function(contact) {
+        this.$axios.put(CONF.UPDATE.replace("${no}", contact.no), contact)
+        .then((response) => {
+          this.fetchContacts();
+        })
+        .catch((ex) => {
+          console.log('updateContact failed : ', ex);
+        })
+      },
+
+      fetchContactOne: function(no) {
+        this.$axios.get(CONF.FETCH_ONE.replace("${no}", no))
+        .then((response) => {
+          this.contact = response.data;
+        })
+        .catch((ex) => {
+          console.log('fetchContactOne failed : ', ex);
+        })
+      },
+
+      deleteContact: function(no) {
+        this.$axios.delete(CONF.DELETE.replace('${no}', no))
+        .then((response) => {
+          this.fetchContacts();
+        })
+        .catch((ex) => {
+          console.log('deleteContact failed : ', ex);
+        })
+      },
+
+      updatePhoto: function(no, file) {
+        var data = new FormData();
+        data.append('photo', file);
+
+        this.$axios.post(CONF.UPDATE_PHOTO.replace("${no}", no), data)
+        .then((response) => {
+          this.fetchContacts();
+        })
+        .catch((ex) => {
+          console.log('updatePhoto failed: ', ex);
+        })
+      }
 
     },
     watch: {
