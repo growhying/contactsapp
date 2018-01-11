@@ -48,6 +48,55 @@
     },
 
     mounted: function() {
+      // 이벤트 버스에 전달될 이벤트 작성
+
+      // 처음 실행시 첫 번째 페이지 데이터를 보여주기
+      this.fetchContacts();
+
+      // 모든 입력 폼에서 취소 버튼을 누르면 발생
+      eventBus.$on("cancel", () => {
+        this.currentView = null;
+      });
+
+      // 연락처 추가 이벤트
+      eventBus.$on("addSubmit", (contact) => {
+        this.currentView = null;
+        this.addContact(contact);
+      });
+
+      // 연락처 수정 이벤트
+      eventBus.$on("updateSubmit", (contact) => {
+        this.currentView = null;
+        this.updateContact(contact);
+      });
+
+      // 연락처 추가 폼 나타날 수 있도록 currentView를 addContact로 변경함
+      eventBus.$on("addContactForm", () => {
+        this.currentView = 'addContact';
+      });
+
+      // 변경 폼에 기존 연락처 데이터가 나타날 수 있도록 하며, currentView를 연락처 변경 폼으로 변경함
+      eventBus.$on("editContactForm", () => {
+        this.fetchContactOne(no);
+        this.currentView = 'updateContact';
+      });
+
+      eventBus.$on("deleteContact", (no) => {
+        this.deleteContact(no);
+      });
+
+      // currentView를 updatePhoto로 변경함
+      eventBus.$on("editPhoto", (no) => {
+        this.fetchContactOne(no);
+        this.currentView = 'updatePhoto';
+      });
+      
+      eventBus.$on("updatePhoto", (no, file) => {
+        if (typeof file !== 'undefined') {
+          this.updatePhoto(no, file);
+        }
+        this.currentView = null;
+      });
 
     },
     computed: {
