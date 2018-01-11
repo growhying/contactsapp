@@ -25,8 +25,8 @@
   // 컴포넌트 참조
   import ContactList from './components/ContactList';
   import AddContact from './components/AddContact';
-  import UpdateContact from './component/UpdateContact';
-  import UpdatePhoto from './component/UpdatePhoto';
+  import UpdateContact from './components/UpdateContact';
+  import UpdatePhoto from './components/UpdatePhoto';
 
   import CONF from './Config.js';
   import eventBus from './EventBus.js';
@@ -90,7 +90,7 @@
         this.fetchContactOne(no);
         this.currentView = 'updatePhoto';
       });
-      
+
       eventBus.$on("updatePhoto", (no, file) => {
         if (typeof file !== 'undefined') {
           this.updatePhoto(no, file);
@@ -192,7 +192,13 @@
 
     },
     watch: {
-
+      // 관찰 속성 작성
+      // 다른 페이지를 조회하던 중 새로운 연락처를 추가하면 방금 추가한 연락처를 확인할 수 있도록 첫 번째 페이지로 이동
+      // vuejs-paginate 컴포넌트는 pageno를 바인딩하지 않도록 만들어져 있으므로,
+      // 관찰 속성을 이용해 직접 선택된 페이지 번호를 변경해 주어야 함
+      ['contactlist.pageno'] : function() {
+        this.$refs.pagebuttons.selected = this.contactlist.pageno - 1;
+      }
     }
   }
 </script>
