@@ -5,8 +5,8 @@
       <p>"(Dynamic Component + EventBus + Axios)"</p>
     </div>
     <component :is="currentView" :contact="contact"></component>
-    <contactlist :contactlist="contactlist"></contactlist>
-    <pagenate ref="pagebuttons"
+    <contactList :contactlist="contactlist"></contactList>
+    <paginate ref="pagebuttons"
               :page-count="totalpage"
               :page-range="7"
               :margin-pages="3"
@@ -15,7 +15,7 @@
               :next-text="'다음'"
               :container-class="'pagination'"
               :page-class="'page-item'">
-    </pagenate>
+    </paginate>
   </div>
 </template>
 
@@ -204,7 +204,7 @@
 </script>
 
 <style scoped>
-  @import url("https://cdn.bootcss.com/bootstra/3.3.5/css/bootstrap.css");
+  @import url("https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css");
 
   #container {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
