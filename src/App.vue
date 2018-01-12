@@ -76,7 +76,7 @@
       });
 
       // 변경 폼에 기존 연락처 데이터가 나타날 수 있도록 하며, currentView를 연락처 변경 폼으로 변경함
-      eventBus.$on("editContactForm", () => {
+      eventBus.$on("editContactForm", (no) => {
         this.fetchContactOne(no);
         this.currentView = 'updateContact';
       });
